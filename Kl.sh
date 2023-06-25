@@ -1,4 +1,12 @@
 #!bin/bash
+if [ $EUID -ne 0 ]; then
+    echo "需要以 root 权限运行脚本，请输入 root 密码："
+    sudo -v
+    if [ $? -ne 0 ]; then
+        echo "认证失败，请检查密码是否正确。"
+        exit 1
+    fi
+fi
 sudo apt update 
 sudo apt install apt-transport-https ca-certificates curl gnupg-agent software-properties-common
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
